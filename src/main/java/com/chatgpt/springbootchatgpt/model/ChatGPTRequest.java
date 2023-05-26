@@ -17,7 +17,7 @@ public class ChatGPTRequest {
     private int temperature = 1;
 
     @SerializedName(value = "max_tokens")
-    private int maxTokens = 2000;
+    private int maxTokens = 4000;
 
     // Constructor
     public ChatGPTRequest(String prompt) {
