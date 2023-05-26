@@ -4,5 +4,11 @@ import lombok.Data;
 
 @Data
 public class ChatGptChoice {
-    private String text;
+    private ChatGptMessage message;
+    private String finish_reason;
+    private double index;
+
+    public String getText() {
+        return message.getContent();
+    }
 }

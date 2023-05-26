@@ -13,6 +13,9 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Service
 @Slf4j
 public class ChatGPTService {
@@ -25,9 +28,7 @@ public class ChatGPTService {
 
     public String processSearch(String query) {
 
-        ChatGPTRequest chatGPTRequest = new ChatGPTRequest();
-        chatGPTRequest.setPrompt(query);
-
+        ChatGPTRequest chatGPTRequest = new ChatGPTRequest(query);
 
         String url = OPEN_AI_URL;
 
@@ -42,9 +43,8 @@ public class ChatGPTService {
         log.info("body: " + body);
 
         try {
-            final StringEntity entity = new StringEntity(body);
+            final StringEntity entity = new StringEntity(body, "UTF-8");
             post.setEntity(entity);
-
             try (CloseableHttpClient httpClient = HttpClients.custom().build();
                  CloseableHttpResponse response = httpClient.execute(post)) {
 
@@ -63,7 +63,6 @@ public class ChatGPTService {
             return "failed";
         }
 
-
-
     }
+
 }

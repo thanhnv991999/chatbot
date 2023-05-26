@@ -1,4 +1,6 @@
 package com.chatgpt.springbootchatgpt.controller;
+
+import com.chatgpt.springbootchatgpt.service.ChatGPTService;
 import com.github.messenger4j.Messenger;
 import com.github.messenger4j.exception.MessengerApiException;
 import com.github.messenger4j.exception.MessengerIOException;
@@ -16,9 +18,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static com.github.messenger4j.Messenger.*;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/webhook")
@@ -27,7 +33,10 @@ public class WebHookController {
 
 //    private final Messenger messenger;
 
-    private  Messenger messenger;
+    private Messenger messenger;
+
+    @Autowired
+    private ChatGPTService chatGPTService;
 
     @Autowired
     public void WebhookController(final Messenger messenger) {
@@ -72,7 +81,14 @@ public class WebHookController {
 
     private void handleTextMessageEvent(TextMessageEvent event) throws MessengerApiException, MessengerIOException {
         final String senderId = event.senderId();
-        sendTextMessageUser(senderId, "Xin chào! Đây là chatbot được tạo từ thanhnv");
+        List<String> preambles = Arrays.asList("hi", "xin chào", "...", "..", ".", "hello", "chào");
+        String userInput = event.text();
+        if (preambles.contains(userInput)) {
+            sendTextMessageUser(senderId, "Xin chào! Đây là chatbot được tạo từ thanhnv");
+        } else {
+            String responseGPT = chatGPTService.processSearch(userInput);
+            sendTextMessageUser(senderId, responseGPT);
+        }
 
     }
 
