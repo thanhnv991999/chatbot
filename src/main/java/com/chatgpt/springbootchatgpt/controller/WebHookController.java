@@ -84,7 +84,7 @@ public class WebHookController {
         List<String> preambles = Arrays.asList("hi", "xin chào", "...", "..", ".", "hello", "chào");
         String userInput = event.text();
         if (preambles.contains(userInput.toLowerCase())) {
-            sendTextMessageUser(senderId, "Xin chào! Tôi là Chat BOT được tạo từ anh Thành đẹp choai :V");
+            sendTextMessageUser(senderId, "Xin chào Trương Quang Vinh ! Tôi là Chat BOT được tạo từ anh Thành");
         } else {
             String responseGPT = chatGPTService.processSearch(userInput);
             sendTextMessageUser(senderId, responseGPT);
